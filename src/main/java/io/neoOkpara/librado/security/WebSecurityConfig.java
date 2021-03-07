@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -42,8 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers(SecurityConstants.SIGN_UP_IN_URL)
 			.permitAll()
-			.antMatchers("/products/**", "/category/**", "/cart/**", "/utils/**", "/users/search/**")
-			.permitAll()
 			.anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler());
 		
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -53,17 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 	}
-	
-	@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(
-        		   "/v2/api-docs",
-			       "/configuration/ui",
-			       "/swagger-resources/**",
-			       "/configuration/security",
-			       "/swagger-ui.html",
-			       "/webjars/**");
-    }
 	
 	@Bean
 	@Override

@@ -1,4 +1,4 @@
-package io.neoOkpara.librado.shared;
+package io.neoOkpara.librado.ws.shared;
 
 import java.util.Date;
 

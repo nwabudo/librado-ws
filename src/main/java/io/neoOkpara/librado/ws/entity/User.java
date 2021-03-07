@@ -7,15 +7,19 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="users_tbl")
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends AuditModel {
 
 	private static final long serialVersionUID = -4086767047093795760L;
@@ -39,7 +43,7 @@ public class User extends AuditModel {
 
 	@Column(nullable = false)
 	@Builder.Default
-	private boolean enabled = false;
+	private boolean enabled = true;
 
 	@Column(nullable = false)
 	@Builder.Default

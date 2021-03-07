@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.neoOkpara.librado.shared.JwtUtils;
+import io.neoOkpara.librado.ws.shared.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
