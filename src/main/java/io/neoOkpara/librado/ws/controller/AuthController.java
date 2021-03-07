@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @Slf4j
-@RequestMapping("/auth")
+@RequestMapping("api/v1/auth")
 public class AuthController {
 
 	private final UserRepository userRepo;
