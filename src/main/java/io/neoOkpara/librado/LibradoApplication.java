@@ -26,11 +26,6 @@ public class LibradoApplication {
 	public BCryptPasswordEncoder bCryptPassword() {
 		return new BCryptPasswordEncoder();
 	}
-
-	@Bean
-	public SpringApplicationContext springApplicationContext() {
-		return new SpringApplicationContext();
-	}
 	
 	@Bean
 	public ObjectMapper objectMapper() {
