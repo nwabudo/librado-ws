@@ -22,4 +22,8 @@ public interface LibraryService {
 	Page<Book> searchBooksByAuthorName(String authorName, int page, int size);
 
 	Page<Book> getAllBooks(int page, int size);
+
+	boolean lendBook(String userId, String bookISBNNo);
+
+	boolean returnBook(String userId, String bookCode);
 }

@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import io.neoOkpara.librado.ws.dtos.BookDTO;
 import io.neoOkpara.librado.ws.dtos.ErrorMessages;
 import io.neoOkpara.librado.ws.entity.Book;
+import io.neoOkpara.librado.ws.entity.User;
 import io.neoOkpara.librado.ws.exceptions.RecordNotFoundException;
 import io.neoOkpara.librado.ws.exceptions.ServiceException;
 import io.neoOkpara.librado.ws.respository.BookRepository;
+import io.neoOkpara.librado.ws.respository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -23,6 +25,9 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Autowired
 	BookRepository bookrepo;
+
+	@Autowired
+	UserRepository userRepo;
 
 	@Autowired
 	ModelMapper mapper;
@@ -57,7 +62,7 @@ public class LibraryServiceImpl implements LibraryService {
 		try {
 			Book book = bookrepo.findByBookISBNCode(bookdto.getBookISBNCode())
 					.orElseThrow(() -> new RecordNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage()));
-			
+
 			book.setAuthorName(bookdto.getAuthorName());
 			book.setBookTitle(bookdto.getBookTitle());
 			book.setBookDesc(bookdto.getBookDesc());
@@ -150,6 +155,54 @@ public class LibraryServiceImpl implements LibraryService {
 			throw new ServiceException(message);
 		}
 		return prodPage;
+	}
+
+	@Override
+	public boolean lendBook(String userId, String bookCode) {
+		try {
+			User user = userRepo.findByUserId(userId).orElseThrow(
+					() -> new RecordNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage(userId)));
+			Book book = bookrepo.findByBookISBNCode(bookCode).orElseThrow(
+					() -> new RecordNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage(bookCode)));
+			if (!book.isAvailable())
+				return false;
+			if (book.getCurrentHandler() == null) {
+				book.setCurrentHandler(user);
+				book.setAvailable(false);
+				bookrepo.save(book);
+				return true;
+			}
+			return false;
+		} catch (Exception ex) {
+			String message = ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage() + ": " + ex.getMessage();
+			log.error("Error Occured {}. Caused by {}", message, ex.getCause());
+			throw new ServiceException(message);
+		}
+	}
+
+	@Override
+	public boolean returnBook(String userId, String bookCode) {
+		try {
+			User user = userRepo.findByUserId(userId).orElseThrow(
+					() -> new RecordNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage(userId)));
+			Book book = bookrepo.findByBookISBNCode(bookCode).orElseThrow(
+					() -> new RecordNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage(bookCode)));
+			if (book.isAvailable())
+				return true;
+			if (book.getCurrentHandler() == null)
+				return true;
+			if (book.getCurrentHandler().equals(user)) {
+				book.setCurrentHandler(null);
+				book.setAvailable(true);
+				bookrepo.save(book);
+				return true;
+			}
+			return false;
+		} catch (Exception ex) {
+			String message = ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage() + ": " + ex.getMessage();
+			log.error("Error Occured {}. Caused by {}", message, ex.getCause());
+			throw new ServiceException(message);
+		}
 	}
 
 }

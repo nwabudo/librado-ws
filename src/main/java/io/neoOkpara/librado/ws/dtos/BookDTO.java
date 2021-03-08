@@ -33,7 +33,7 @@ public class BookDTO extends RepresentationModel<BookDTO>  {
 	private String bookDesc;
 	
 	@Builder.Default
-	private boolean isavailable = true;
+	private boolean available = true;
 	
 	@NotBlank(message = "Book ISBN No is mandatory")
 	private String bookISBNCode;

@@ -25,4 +25,8 @@ public enum ErrorMessages {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+
+	public String getErrorMessage(String id) {
+		return String.format("%s : %s", errorMessage, id);
+	}
 }

@@ -7,14 +7,18 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="books_tbl")
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Book extends AuditModel {
 
@@ -37,7 +41,7 @@ public class Book extends AuditModel {
 	
 	//private int bookCount;
 	
-	private boolean isavailable;
+	private boolean available;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	private User currentHandler;

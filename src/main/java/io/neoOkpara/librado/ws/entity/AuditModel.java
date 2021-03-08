@@ -27,13 +27,14 @@ import lombok.Setter;
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class AuditModel implements Serializable {
 
 	private static final long serialVersionUID = 3249193964152480108L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
 	private Long id;
 
 	@Temporal(TemporalType.TIMESTAMP)

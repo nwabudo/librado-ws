@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name="users_tbl")
 @Builder
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends AuditModel {
@@ -31,14 +30,14 @@ public class User extends AuditModel {
 	@Column(length = 10)
 	private Gender gender;
 
-	@Lob
-	@Column(nullable = false, length = 80, columnDefinition = "TEXT", unique = true)
+	@Column(nullable = false, length = 80, unique = true)
 	private String email;
 
 	@Column(nullable = false, length = 100)
 	private String encryptedPassword;
 
 	@Column(nullable = false, unique = true, length = 20)
+	@EqualsAndHashCode.Include
 	private String userId;
 
 	@Column(nullable = false)

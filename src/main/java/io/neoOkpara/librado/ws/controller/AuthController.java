@@ -1,6 +1,7 @@
 package io.neoOkpara.librado.ws.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,13 @@ public class AuthController {
 	}
 	
 	@PostMapping("login")
-	public ResponseEntity<?> sigInMethod(final HttpServletRequest request, @RequestBody PassRequest loginRequest){
+	public ResponseEntity<?> sigInMethod(final HttpServletRequest request, @Valid @RequestBody PassRequest loginRequest){
 		return new ResponseEntity<>(authService.authenticate(loginRequest), HttpStatus.OK);
 	}
 
 	@PostMapping("signup")
 	public ResponseEntity<ApiResponse> signUpMethod(final HttpServletRequest request,
-			 @RequestBody UserDTO userDTO) throws Exception {
+			 @Valid @RequestBody UserDTO userDTO) throws Exception {
 		
 		if (this.userRepo.existsByEmail(userDTO.getEmail())) {
 			return new ResponseEntity<>(new ApiResponse(400, "Email already exists"), HttpStatus.BAD_REQUEST);
