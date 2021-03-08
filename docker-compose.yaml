@@ -1,0 +1,28 @@
+version: "3"
+services:
+  libradoDB:
+    image: mysql:latest
+    container_name: "libradoDB"
+    environment:
+      - MYSQL_ROOT_PASSWORD=emmoxbobo
+      - MYSQL_DATABASE=library
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD","mysqladmin","ping","-h","localhost" ]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+      
+  libradoApp:
+    image: library_app:1.0.0
+    container_name: libradoApp
+    ports:
+     - 8082:8081
+    links:
+     - libradoDB
+     
+volumes:
+  db-data:

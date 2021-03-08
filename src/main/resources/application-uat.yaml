@@ -1,0 +1,10 @@
+spring:
+    datasource:
+        password: emmoxbobo
+        url: jdbc:mysql://libradoDB:3306/library?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        username: root
+        driverClassName: com.mysql.jdbc.Driver
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
